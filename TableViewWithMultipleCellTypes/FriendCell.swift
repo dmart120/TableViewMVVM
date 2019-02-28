@@ -8,22 +8,34 @@
 
 import UIKit
 
-class FriendCell: UITableViewCell {
+class FriendCell: UITableViewCell, ConfigurableTableViewCell {
 
     @IBOutlet weak var pictureImageView: UIImageView?
     @IBOutlet weak var nameLabel: UILabel?
     
-    var item: Friend? {
+    var oldItem: Friend? {
         didSet {
-            guard let item = item else {
-                return
-            }
+            guard let item = oldItem else { return }
             
             if let pictureUrl = item.pictureUrl {
                 pictureImageView?.image = UIImage(named: pictureUrl)
             }
             
             nameLabel?.text = item.name
+        }
+    }
+    
+    var row: Int?
+    
+    var item: ProfileViewModelItem? {
+        didSet {
+            guard let item = item as? ProfileViewModeFriendsItem, let row = row else { return }
+            
+            let friend = item.friends[row]
+            if let pictureUrl = friend.pictureUrl {
+                pictureImageView?.image = UIImage(named: pictureUrl)
+            }
+            nameLabel?.text = friend.name
         }
     }
     

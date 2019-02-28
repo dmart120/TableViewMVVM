@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AboutCell: UITableViewCell {
+class AboutCell: UITableViewCell, ConfigurableTableViewCell {
 
     @IBOutlet weak var aboutLabel: UILabel?
     
@@ -21,6 +21,8 @@ class AboutCell: UITableViewCell {
             aboutLabel?.text = item.about
         }
     }
+    
+    var row: Int?
     
     static var nib:UINib {
         return UINib(nibName: identifier, bundle: nil)
