@@ -13,18 +13,6 @@ class FriendCell: UITableViewCell, ConfigurableTableViewCell {
     @IBOutlet weak var pictureImageView: UIImageView?
     @IBOutlet weak var nameLabel: UILabel?
     
-    var oldItem: Friend? {
-        didSet {
-            guard let item = oldItem else { return }
-            
-            if let pictureUrl = item.pictureUrl {
-                pictureImageView?.image = UIImage(named: pictureUrl)
-            }
-            
-            nameLabel?.text = item.name
-        }
-    }
-    
     var row: Int?
     
     var item: ProfileViewModelItem? {
