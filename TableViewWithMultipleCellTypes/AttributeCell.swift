@@ -8,17 +8,22 @@
 
 import UIKit
 
-class AttributeCell: UITableViewCell {
+class AttributeCell: UITableViewCell, ConfigurableTableViewCell {
 
     @IBOutlet weak var titleLabel: UILabel?
     @IBOutlet weak var valueLabel: UILabel?
     
-    var item: Attribute?  {
+    var item: ProfileViewModelItem? {
         didSet {
-            titleLabel?.text = item?.key
-            valueLabel?.text = item?.value
+            guard let item = item as? ProfileViewModeAttributeItem, let row = row else { return }
+            
+            let attribute = item.attributes[row]
+            titleLabel?.text = attribute.key
+            valueLabel?.text = attribute.value
         }
     }
+    
+    var row: Int?
     
     static var nib:UINib {
         return UINib(nibName: identifier, bundle: nil)

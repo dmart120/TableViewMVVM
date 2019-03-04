@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NamePictureCell: UITableViewCell {
+class NamePictureCell: UITableViewCell, ConfigurableTableViewCell {
 
     @IBOutlet weak var nameLabel: UILabel?
     @IBOutlet weak var pictureImageView: UIImageView?
@@ -23,6 +23,8 @@ class NamePictureCell: UITableViewCell {
             pictureImageView?.image = UIImage(named: item.pictureUrl)
         }
     }
+    
+    var row: Int?
     
     static var nib:UINib {
         return UINib(nibName: identifier, bundle: nil)

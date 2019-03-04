@@ -8,7 +8,7 @@
 
 import UIKit
 
-class EmailCell: UITableViewCell {
+class EmailCell: UITableViewCell, ConfigurableTableViewCell {
 
     @IBOutlet weak var emailLabel: UILabel?
     
@@ -21,6 +21,8 @@ class EmailCell: UITableViewCell {
             emailLabel?.text = item.email
         }
     }
+    
+    var row: Int?
 
     static var nib:UINib {
         return UINib(nibName: identifier, bundle: nil)

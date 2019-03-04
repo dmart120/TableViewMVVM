@@ -20,6 +20,7 @@ enum ProfileViewModelItemType {
 protocol ProfileViewModelItem {
     var type: ProfileViewModelItemType { get }
     var sectionTitle: String { get }
+    var cellIdentifier: String { get }
     var rowCount: Int { get }
 }
 
@@ -72,35 +73,11 @@ extension ProfileViewModel: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let item = items[indexPath.section]
-        switch item.type {
-        case .nameAndPicture:
-            if let cell = tableView.dequeueReusableCell(withIdentifier: NamePictureCell.identifier, for: indexPath) as? NamePictureCell {
-                cell.item = item
-                return cell
-            }
-        case .about:
-            if let cell = tableView.dequeueReusableCell(withIdentifier: AboutCell.identifier, for: indexPath) as? AboutCell {
-                cell.item = item
-                return cell
-            }
-        case .email:
-            if let cell = tableView.dequeueReusableCell(withIdentifier: EmailCell.identifier, for: indexPath) as? EmailCell {
-                cell.item = item
-                return cell
-            }
-        case .friend:
-            if let item = item as? ProfileViewModeFriendsItem, let cell = tableView.dequeueReusableCell(withIdentifier: FriendCell.identifier, for: indexPath) as? FriendCell {
-                let friend = item.friends[indexPath.row]
-                cell.item = friend
-                return cell
-            }
-        case .attribute:
-            if let item = item as? ProfileViewModeAttributeItem, let cell = tableView.dequeueReusableCell(withIdentifier: AttributeCell.identifier, for: indexPath) as? AttributeCell {
-                cell.item = item.attributes[indexPath.row]
-                return cell
-            }
+        let cell = tableView.dequeueReusableCell(withIdentifier: item.cellIdentifier, for: indexPath)
+        if let temp = cell as? ConfigurableTableViewCell {
+            temp.configure(row: indexPath.row, item: item)
         }
-        return UITableViewCell()
+        return cell
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -120,6 +97,10 @@ class ProfileViewModelNamePictureItem: ProfileViewModelItem {
     
     var rowCount: Int {
         return 1
+    }
+    
+    var cellIdentifier: String {
+        return NamePictureCell.identifier
     }
     
     var name: String
@@ -144,6 +125,10 @@ class ProfileViewModelAboutItem: ProfileViewModelItem {
         return 1
     }
     
+    var cellIdentifier: String {
+        return AboutCell.identifier
+    }
+    
     var about: String
     
     init(about: String) {
@@ -162,6 +147,10 @@ class ProfileViewModelEmailItem: ProfileViewModelItem {
     
     var rowCount: Int {
         return 1
+    }
+    
+    var cellIdentifier: String {
+        return EmailCell.identifier
     }
     
     var email: String
@@ -184,6 +173,10 @@ class ProfileViewModeAttributeItem: ProfileViewModelItem {
         return attributes.count
     }
     
+    var cellIdentifier: String {
+        return AttributeCell.identifier
+    }
+    
     var attributes: [Attribute]
     
     init(attributes: [Attribute]) {
@@ -202,6 +195,10 @@ class ProfileViewModeFriendsItem: ProfileViewModelItem {
     
     var rowCount: Int {
         return friends.count
+    }
+    
+    var cellIdentifier: String {
+        return FriendCell.identifier
     }
     
     var friends: [Friend]
